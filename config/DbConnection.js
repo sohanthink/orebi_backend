@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
-const uri =
-  "mongodb+srv://orebi_backend:zWzJpY.5Zb.LjEH@cluster0.3r5mijt.mongodb.net/";
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.3r5mijt.mongodb.net/`;
 
 async function DbConnection() {
   try {
