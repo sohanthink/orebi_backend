@@ -1,5 +1,6 @@
 const User = require("../model/userSchema");
 const emailvalidation = require("../helpers/emailValidation");
+const bcrypt = require("bcrypt");
 
 let registrationController = async (req, res) => {
   let { name, email, password } = req.body;
@@ -20,15 +21,19 @@ let registrationController = async (req, res) => {
           return res.send("A Valid Email Required");
         }
       }
-      // saving a user into the database
-      let user = new User({
-        name,
-        email,
-        password,
-      });
 
-      user.save().then(() => {
-        res.send("Registration succesfull !!");
+      //   making the password as encrypted before saving
+      bcrypt.hash(password, 10, function (err, hash) {
+        // saving a user into the database
+        let user = new User({
+          name,
+          email,
+          password: hash,
+        });
+
+        user.save().then(() => {
+          res.send("Registration succesfull !!");
+        });
       });
     }
   } else {
