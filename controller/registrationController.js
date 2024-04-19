@@ -82,7 +82,9 @@ let registrationController = async (req, res) => {
     // let verificationLink = `https://yourwebsite.com/verify?token=${otp}`;
     await sendVerificationEmail(email, otp);
 
-    res.status(200).json({ message: "Registration successful" });
+    res
+      .status(200)
+      .json({ message: "Verification code sent to your email !!" });
   } catch (error) {
     console.error("Error registering user:", error);
     res.status(500).json({ message: "Failed to register user" });
