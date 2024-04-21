@@ -4,6 +4,14 @@ const route = require("./routes");
 const express = require("express");
 const app = express();
 
+const cors = require("cors");
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 DbConnection();
 

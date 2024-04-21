@@ -12,6 +12,8 @@ let otpVerifyController = async (req, res) => {
       .catch((error) => {
         res.send("verify failed! Please Try again");
       });
+  } else {
+    res.send("Wrong OTP!!");
   }
 
   if (user.otp == "") {

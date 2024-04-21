@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const otpGenerator = require("otp-generator");
 const nodemailer = require("nodemailer");
 
-const sendVerificationEmail = async (email, otp) => {
+const sendVerificationEmail = async (email, otp, verificationLink) => {
   // Create a Nodemailer transporter using SMTP
   let transporter = nodemailer.createTransport({
     service: "Gmail",
@@ -24,6 +24,7 @@ const sendVerificationEmail = async (email, otp) => {
             <p>Thank you for signing up with OREBI! To complete your registration and ensure the security of your account, please verify your email address by Using the OTP</p>
             
             <p style="padding:20px 0;background:yellow;text-align:center">${otp}</p>
+            <p>you can visit the link to verify as well : ${verificationLink}</p>
             <p>Once your email address has been verified, you will have full access to our services.</p>
             <p>If you did not sign up for an account with OREBI, please disregard this email.</p>
             <p>Thank you,<br/>The OREBI Team</p>
@@ -46,7 +47,7 @@ let registrationController = async (req, res) => {
   try {
     let existingUser = await User.findOne({ email: email });
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(401).json({ message: "User already exists" });
     }
 
     if (!name || !password || !email) {
@@ -79,8 +80,8 @@ let registrationController = async (req, res) => {
     await user.save();
 
     // Send verification email
-    // let verificationLink = `https://yourwebsite.com/verify?token=${otp}`;
-    await sendVerificationEmail(email, otp);
+    let verificationLink = `http://localhost:5173/otp/${email}`;
+    await sendVerificationEmail(email, otp, verificationLink);
 
     res
       .status(200)
