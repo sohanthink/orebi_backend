@@ -9,14 +9,14 @@ const sendVerificationEmail = async (email, otp, verificationLink) => {
   let transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-      user: "sohanthink@gmail.com",
-      pass: "qqur nsli ovbh agmb",
+      user: process.env.BASE_EMAIL,
+      pass: process.env.EMAIL_KEY,
     },
   });
 
   // Email template
   let mailOptions = {
-    from: "sohan <sohanthink@gmail.com>",
+    from: process.env.BASE_EMAIL,
     to: email,
     subject: "Verify Your Email Address",
     html: `
@@ -80,7 +80,7 @@ let registrationController = async (req, res) => {
     await user.save();
 
     // Send verification email
-    let verificationLink = `http://localhost:5173/otp/${email}`;
+    let verificationLink = `${process.env.WEBSITE_URI}/otp/${email}`;
     await sendVerificationEmail(email, otp, verificationLink);
 
     res

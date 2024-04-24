@@ -26,17 +26,17 @@ let forgotPasswordController = async (req, res) => {
           { strict: false }
         );
 
-        let link = `http://localhost:5173/changepassword/${token}`;
+        let link = `${process.env.WEBSITE_URI}/changepassword/${token}`;
         let transporter = nodemailer.createTransport({
           service: "Gmail",
           auth: {
-            user: "sohanthink@gmail.com",
-            pass: "qqur nsli ovbh agmb",
+            user: process.env.BASE_EMAIL,
+            pass: process.env.EMAIL_KEY,
           },
         });
 
         await transporter.sendMail({
-          from: "sohan <sohanthink@gmail.com>",
+          from: process.env.BASE_EMAIL,
           to: existingUser.email,
           subject: "Change Password",
           html: `
